@@ -34,9 +34,11 @@ jobs:
       - name: Clone target repository (Repository B)
         # Sostituisci <YOUR_GITHUB_USERNAME_OR_ORG> e <TARGET_REPO_NAME> con i valori corretti
         # Usa il token per autenticarti nella clonazione del secondo repo
-        run: echo "Only a test for now"
+        #run: echo "Only a test for now"
         #run: |
-        #  git clone https://${{ github.actor }}:${{ secrets.OTHER_REPO_PAT }}@github.com/<YOUR_GITHUB_USERNAME_OR_ORG>/<TARGET_REPO_NAME>.git target-repo
+        #  git clone https://${{ github.actor }}:${{ secrets.OTHER_REPO_PAT }}@github.com/Neomediatech/docker-images-scan-reports.git target-repo
+        run: |
+          git clone https://github.com/Neomediatech/docker-images-scan-reports.git target-repo
         env:
           # Questo non è strettamente necessario se il PAT è nel link, ma è buona pratica per altri comandi git
           # GITHUB_TOKEN: ${{ secrets.OTHER_REPO_PAT }}
