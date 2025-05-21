@@ -45,6 +45,7 @@ jobs:
           # o ometterlo se usi solo il PAT nel URL.
           # È più sicuro usare un token e ometterlo dall'URL se possibile,
           # ma per la clonazione su HTTPS è spesso necessario.
+          SOME_VAR: blabla
 
       - name: Copy file to target repository and commit
         run: |
