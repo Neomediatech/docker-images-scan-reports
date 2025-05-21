@@ -1,0 +1,58 @@
+name: Upload file to another repository
+
+on:
+  workflow_dispatch: # Permette di avviare il workflow manualmente dalla UI di GitHub
+  push:
+    branches:
+      - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
+
+jobs:
+  upload-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current repository (Repository A)
+        uses: actions/checkout@v4 # Usa la versione più recente
+
+      # Simula la creazione di un file da caricare.
+      # Nel tuo caso, qui avresti il tuo processo che genera 'il_tuo_file.txt'
+      - name: Create example file to upload
+        run: |
+          echo "Questo è il contenuto del file generato da Repository A." > il_tuo_file.txt
+          echo "Data e ora: $(date)" >> il_tuo_file.txt
+
+      - name: Get current date for commit message
+        id: date
+        run: echo "now=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+
+      - name: Configure Git for target repository
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Clone target repository (Repository B)
+        # Sostituisci <YOUR_GITHUB_USERNAME_OR_ORG> e <TARGET_REPO_NAME> con i valori corretti
+        # Usa il token per autenticarti nella clonazione del secondo repo
+        run: |
+          git clone https://${{ github.actor }}:${{ secrets.OTHER_REPO_PAT }}@github.com/<YOUR_GITHUB_USERNAME_OR_ORG>/<TARGET_REPO_NAME>.git target-repo
+        env:
+          # Questo non è strettamente necessario se il PAT è nel link, ma è buona pratica per altri comandi git
+          # GITHUB_TOKEN: ${{ secrets.OTHER_REPO_PAT }}
+          # NOTA: github.actor si riferisce all'utente che ha avviato il workflow,
+          # puoi anche usare un placeholder generico come "github-actions"
+          # o ometterlo se usi solo il PAT nel URL.
+          # È più sicuro usare un token e ometterlo dall'URL se possibile,
+          # ma per la clonazione su HTTPS è spesso necessario.
+
+      - name: Copy file to target repository and commit
+        run: |
+          cp il_tuo_file.txt target-repo/
+          cd target-repo
+          git add il_tuo_file.txt
+          git commit -m "Upload il_tuo_file.txt from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
+          git push https://${{ github.actor }}:${{ secrets.OTHER_REPO_PAT }}@github.com/<YOUR_GITHUB_USERNAME_OR_ORG>/<TARGET_REPO_NAME>.git
+        env:
+          # Questo env GITHUB_TOKEN non è quello standard e non è richiesto se usi il PAT nell'URL
+          # GITHUB_TOKEN: ${{ secrets.OTHER_REPO_PAT }}
+          # Per un commit più sicuro, puoi usare un token per l'autenticazione come nel comando push.
+          # Assicurati che l'URL includa il token per l'autenticazione del push.
