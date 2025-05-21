@@ -3,9 +3,9 @@ name: Upload file to another repository
 on:
   workflow_dispatch: # Permette di avviare il workflow manualmente dalla UI di GitHub
   workflow_call: # Permette di riutilizzare il workflow da un altro repo
-  push:
-    branches:
-      - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
+  #push:
+  #  branches:
+  #    - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
 
 jobs:
   upload-file:
