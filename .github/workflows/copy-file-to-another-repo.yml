@@ -56,6 +56,7 @@ jobs:
           cp uploaded-file/${{ inputs.filename }} target-repo/
           cd target-repo
           ls -lah
-          git add ${{ inputs.filename }}
-          git commit -m "Upload ${{ inputs.filename }} from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
-          git push https://${{ github.actor }}:${{ secrets.API_TOKEN_GITHUB }}@github.com/Neomediatech/docker-images-scan-reports.git
+          #git add ${{ inputs.filename }}
+          #git commit -m "Upload ${{ inputs.filename }} from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
+          echo "test secret ${{ secrets.TEST_SECRET }}
+          #git push https://${{ github.actor }}:${{ secrets.API_TOKEN_GITHUB }}@github.com/Neomediatech/docker-images-scan-reports.git
