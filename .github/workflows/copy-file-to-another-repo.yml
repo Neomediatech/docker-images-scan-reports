@@ -65,9 +65,12 @@ jobs:
       - name: Copy file to target repository and commit
         run: |
           #cp uploaded-file_${{ inputs.dockertag }}/${{ inputs.filename }} target-repo/
-          cp downloaded-artifact/${{ inputs.filename }} target-repo/
+          cp downloaded-artifact/* target-repo/
+          #cp downloaded-artifact/${{ inputs.filename }} target-repo/
           cd target-repo
           ls -lah
-          git add ${{ inputs.filename }}
-          git commit -m "Upload ${{ inputs.filename }} from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
+          FILES="$(ls|xargs)"
+          git add .
+          #git add ${{ inputs.filename }}
+          git commit -m "Upload $FILES from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
           git push https://${{ github.actor }}:${{ secrets.API_TOKEN_GITHUB }}@github.com/Neomediatech/docker-images-scan-reports.git
