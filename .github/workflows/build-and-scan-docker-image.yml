@@ -103,7 +103,7 @@ jobs:
         id: upload-json
         uses: actions/upload-artifact@v4
         with:
-          name: uploaded-json
+          name: uploaded-json_${{ inputs.dockertag }}
           path: ${{ steps.vars.outputs.file_to_copy }}.json
           overwrite: true
           compression-level: 0
@@ -113,7 +113,7 @@ jobs:
         id: upload-step
         uses: actions/upload-artifact@v4
         with:
-          name: uploaded-file
+          name: uploaded-file_${{ inputs.dockertag }}
           path: ${{ steps.vars.outputs.file_to_copy }}.html
           overwrite: true
           compression-level: 0
