@@ -19,7 +19,7 @@ on:
   #    - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
     secrets:
       API_TOKEN_GITHUB:
-        required: true
+        required: false
         
 jobs:
   upload-file:
