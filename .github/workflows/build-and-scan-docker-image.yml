@@ -30,7 +30,7 @@ on:
   #    - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
     secrets:
       GHCR_TOKEN:
-        required: true
+        required: false
     outputs:
       file_to_copy_output:
         description: "The name of the generated HTML report file"
