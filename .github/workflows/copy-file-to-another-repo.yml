@@ -40,7 +40,7 @@ jobs:
           artifact-ids: ${{ inputs.filename }}
 
       - name: show directory content
-        run: ls -lah ${{ inputs.filename }}
+        run: ls -lah uploaded-file
 
       - name: Get current date for commit message
         id: date
