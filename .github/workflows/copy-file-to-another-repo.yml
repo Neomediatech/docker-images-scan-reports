@@ -36,7 +36,8 @@ jobs:
       - name: Download File
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.filename }}
+          #name: ${{ inputs.filename }}
+          artifact-ids: ${{ inputs.filename }}
 
       - name: Get current date for commit message
         id: date
