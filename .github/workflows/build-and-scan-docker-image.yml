@@ -14,6 +14,11 @@ on:
         required: false
         type: string
         default: "."
+      dockertag:
+        description: 'Tag for the image'
+        required: false
+        type: string
+        default: "latest"
       filename:
         required: false
         type: string
@@ -37,6 +42,9 @@ on:
 jobs:
   build-and-scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Permesso per il checkout del codice
+      packages: write # Permesso per scrivere pacchetti (necessario per GHCR)
     outputs:
       # Define an output for this job
       file_to_copy_output: ${{ steps.vars.outputs.file_to_copy }}
@@ -51,14 +59,14 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up image tag (lowercase)
         id: vars
         run: |
           REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           REPO_NAME=$(echo "${REPO_LOWER}"|awk -F'/' '{print $2}')
-          echo "tag=ghcr.io/${REPO_LOWER}:latest" >> $GITHUB_OUTPUT
+          echo "tag=ghcr.io/${REPO_LOWER}:${{ inputs.dockertag }}" >> $GITHUB_OUTPUT
           echo "repo_name=${REPO_NAME}" >> $GITHUB_OUTPUT
           echo "file_to_copy=${REPO_NAME}_trivy-report.html" >> $GITHUB_OUTPUT
 
