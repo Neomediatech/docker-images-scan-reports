@@ -68,7 +68,7 @@ jobs:
           REPO_NAME=$(echo "${REPO_LOWER}"|awk -F'/' '{print $2}')
           echo "tag=ghcr.io/${REPO_LOWER}:${{ inputs.dockertag }}" >> $GITHUB_OUTPUT
           echo "repo_name=${REPO_NAME}" >> $GITHUB_OUTPUT
-          echo "file_to_copy=${REPO_NAME}_trivy-report.html" >> $GITHUB_OUTPUT
+          echo "file_to_copy=${REPO_NAME}:${{ inputs.dockertag }}_trivy-report.html" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
         run: docker build -t ${{ steps.vars.outputs.tag }} ${{ inputs.dockerdir }} -f ${{ inputs.dockerdir }}/${{ inputs.dockerfile }}
