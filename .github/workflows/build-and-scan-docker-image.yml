@@ -68,7 +68,7 @@ jobs:
           REPO_NAME=$(echo "${REPO_LOWER}"|awk -F'/' '{print $2}')
           echo "tag=ghcr.io/${REPO_LOWER}:${{ inputs.dockertag }}" >> $GITHUB_OUTPUT
           echo "repo_name=${REPO_NAME}" >> $GITHUB_OUTPUT
-          echo "file_to_copy=${REPO_NAME}_${{ inputs.dockertag }}_trivy-report.html" >> $GITHUB_OUTPUT
+          echo "file_to_copy=${REPO_NAME}_${{ inputs.dockertag }}_trivy-report" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
         run: docker build -t ${{ steps.vars.outputs.tag }} ${{ inputs.dockerdir }} -f ${{ inputs.dockerdir }}/${{ inputs.dockerfile }}
@@ -86,7 +86,7 @@ jobs:
           #version: latest
           image-ref: ${{ steps.vars.outputs.tag }}
           format: 'json'
-          output: 'trivy-report.json'
+          output: ${{ steps.vars.outputs.file_to_copy }}.json
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
@@ -97,14 +97,14 @@ jobs:
         run: wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
 
       - name: Generate HTML report from JSON
-        run: trivy convert --format template --template "@$GITHUB_WORKSPACE/html.tpl" -o ${{ steps.vars.outputs.file_to_copy }} trivy-report.json
+        run: trivy convert --format template --template "@$GITHUB_WORKSPACE/html.tpl" -o ${{ steps.vars.outputs.file_to_copy }}.html ${{ steps.vars.outputs.file_to_copy }}.json
 
       - name: Upload json report
         id: upload-json
         uses: actions/upload-artifact@v4
         with:
           name: uploaded-json
-          path: trivy-report.json
+          path: ${{ steps.vars.outputs.file_to_copy }}.json
           overwrite: true
           compression-level: 0
           retention-days: 1
@@ -114,7 +114,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: uploaded-file
-          path: ${{ steps.vars.outputs.file_to_copy }}
+          path: ${{ steps.vars.outputs.file_to_copy }}.html
           overwrite: true
           compression-level: 0
           retention-days: 1
@@ -122,7 +122,7 @@ jobs:
       # ToDo
       #- name: Fail if critical/high vulnerabilities found
       #  run: |
-      #    jq '.Results[].Vulnerabilities[] | select(.Severity == "CRITICAL" or .Severity == "HIGH")' trivy-report.json && exit 1 || exit 0
+      #    jq '.Results[].Vulnerabilities[] | select(.Severity == "CRITICAL" or .Severity == "HIGH")' ${{ steps.vars.outputs.file_to_copy }}.json && exit 1 || exit 0
 
       #- name: Send email with Trivy report attached
       #  if: always()
