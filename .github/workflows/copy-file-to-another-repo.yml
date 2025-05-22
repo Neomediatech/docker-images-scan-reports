@@ -30,8 +30,11 @@ jobs:
       #    echo "Questo è il contenuto del file generato da Repository A." > il_tuo_file.txt
       #    echo "Data e ora: $(date)" >> il_tuo_file.txt
 
+      - name: Echo filename
+        run: echo "filename ${{ inputs.filename }}"
+
       - name: Download File
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.filename }}
 
