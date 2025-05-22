@@ -63,7 +63,7 @@ jobs:
           echo "file_to_copy=${REPO_NAME}_trivy-report.html" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
-        run: docker build -t ${{ steps.vars.outputs.tag }} ${{ inputs.dockerdir }} -f ${{ inputs.dockerfile }}
+        run: docker build -t ${{ steps.vars.outputs.tag }} ${{ inputs.dockerdir }} -f ${{ inputs.dockerdir }}/${{ inputs.dockerfile }}
 
       - name: Push Docker image to GHCR
         run: docker push ${{ steps.vars.outputs.tag }}
