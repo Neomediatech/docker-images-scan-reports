@@ -40,7 +40,8 @@ jobs:
       - name: Download File
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.filename }}
+          name: uploaded-file_${{ inputs.dockertag }}
+          #${{ inputs.filename }}
           #artifact-ids: ${{ inputs.file_id }}
           path: downloaded-artifact
 
