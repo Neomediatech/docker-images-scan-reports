@@ -40,11 +40,13 @@ jobs:
       - name: Download File
         uses: actions/download-artifact@v4
         with:
-          #name: ${{ inputs.filename }}
-          artifact-ids: ${{ inputs.file_id }}
+          name: ${{ inputs.filename }}
+          #artifact-ids: ${{ inputs.file_id }}
+          path: downloaded-artifact
 
       - name: show directory content
-        run: ls -lah uploaded-file_${{ inputs.dockertag }}
+        run: ls -lah downloaded-artifact
+        #uploaded-file_${{ inputs.dockertag }}
 
       - name: Get current date for commit message
         id: date
@@ -61,7 +63,8 @@ jobs:
 
       - name: Copy file to target repository and commit
         run: |
-          cp uploaded-file_${{ inputs.dockertag }}/${{ inputs.filename }} target-repo/
+          #cp uploaded-file_${{ inputs.dockertag }}/${{ inputs.filename }} target-repo/
+          cp downloaded-artifact/${{ inputs.filename }} target-repo/
           cd target-repo
           ls -lah
           git add ${{ inputs.filename }}
