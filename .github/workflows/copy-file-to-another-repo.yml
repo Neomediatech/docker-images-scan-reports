@@ -11,6 +11,10 @@ on:
       filename:
         required: true
         type: string
+      file_id:
+        required: true
+        type: string
+
   #push:
   #  branches:
   #    - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
@@ -30,14 +34,14 @@ jobs:
       #    echo "Questo è il contenuto del file generato da Repository A." > il_tuo_file.txt
       #    echo "Data e ora: $(date)" >> il_tuo_file.txt
 
-      - name: Echo filename
-        run: echo "filename ${{ inputs.filename }}"
+      - name: Echo filename, file_id
+        run: echo "filename ${{ inputs.filename }}, file_id ${{ inputs.file_id }}"
 
       - name: Download File
         uses: actions/download-artifact@v4
         with:
           #name: ${{ inputs.filename }}
-          artifact-ids: ${{ inputs.filename }}
+          artifact-ids: ${{ inputs.file_id }}
 
       - name: show directory content
         run: ls -lah uploaded-file
