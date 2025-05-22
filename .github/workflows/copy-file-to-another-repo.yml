@@ -39,6 +39,9 @@ jobs:
           #name: ${{ inputs.filename }}
           artifact-ids: ${{ inputs.filename }}
 
+      - name: show directory content
+        run: ls -lah
+
       - name: Get current date for commit message
         id: date
         run: echo "now=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
