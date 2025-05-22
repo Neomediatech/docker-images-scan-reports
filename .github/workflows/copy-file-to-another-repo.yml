@@ -26,8 +26,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout current repository (Repository A)
-        uses: actions/checkout@v4 # Usa la versione più recente
+      - name: Checkout current repository
+        uses: actions/checkout@v4
 
       - name: Echo filename, file_id
         run: echo "filename ${{ inputs.filename }}, file_id ${{ inputs.file_id }}"
