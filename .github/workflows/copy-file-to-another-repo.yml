@@ -14,6 +14,11 @@ on:
       file_id:
         required: true
         type: string
+      dockertag:
+        description: 'Tag for the image'
+        required: false
+        type: string
+        default: "latest"
   #push:
   #  branches:
   #    - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
@@ -39,7 +44,7 @@ jobs:
           artifact-ids: ${{ inputs.file_id }}
 
       - name: show directory content
-        run: ls -lah uploaded-file
+        run: ls -lah uploaded-file_${{ inputs.dockertag }}
 
       - name: Get current date for commit message
         id: date
@@ -47,8 +52,8 @@ jobs:
 
       - name: Configure Git for target repository
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git config --global user.email "neo-github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "neo-github-actions[bot]"
 
       - name: Clone target repository
         run: |
@@ -56,7 +61,7 @@ jobs:
 
       - name: Copy file to target repository and commit
         run: |
-          cp uploaded-file/${{ inputs.filename }} target-repo/
+          cp uploaded-file_${{ inputs.dockertag }}/${{ inputs.filename }} target-repo/
           cd target-repo
           ls -lah
           git add ${{ inputs.filename }}
