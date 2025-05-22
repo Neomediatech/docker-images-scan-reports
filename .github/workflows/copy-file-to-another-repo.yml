@@ -17,7 +17,11 @@ on:
   #push:
   #  branches:
   #    - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
-
+    secrets:
+      TEST_SECRET:
+        required: false
+        description: 'A test secret inherited from the caller'
+        
 jobs:
   upload-file:
     runs-on: ubuntu-latest
