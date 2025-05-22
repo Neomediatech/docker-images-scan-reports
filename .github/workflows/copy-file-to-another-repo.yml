@@ -14,7 +14,6 @@ on:
       file_id:
         required: true
         type: string
-
   #push:
   #  branches:
   #    - main # Esegui quando ci sono push sul branch main (o il tuo branch principale)
@@ -26,13 +25,6 @@ jobs:
     steps:
       - name: Checkout current repository (Repository A)
         uses: actions/checkout@v4 # Usa la versione più recente
-
-      # Simula la creazione di un file da caricare.
-      # Nel tuo caso, qui avresti il tuo processo che genera 'il_tuo_file.txt'
-      #- name: Create example file to upload
-      #  run: |
-      #    echo "Questo è il contenuto del file generato da Repository A." > il_tuo_file.txt
-      #    echo "Data e ora: $(date)" >> il_tuo_file.txt
 
       - name: Echo filename, file_id
         run: echo "filename ${{ inputs.filename }}, file_id ${{ inputs.file_id }}"
@@ -55,21 +47,9 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      - name: Clone target repository (Repository B)
-        # Sostituisci <YOUR_GITHUB_USERNAME_OR_ORG> e <TARGET_REPO_NAME> con i valori corretti
-        # Usa il token per autenticarti nella clonazione del secondo repo
-        #run: echo "Only a test for now"
+      - name: Clone target repository
         run: |
           git clone https://github.com/Neomediatech/docker-images-scan-reports.git target-repo
-        env:
-          # Questo non è strettamente necessario se il PAT è nel link, ma è buona pratica per altri comandi git
-          # GITHUB_TOKEN: ${{ secrets.OTHER_REPO_PAT }}
-          # NOTA: github.actor si riferisce all'utente che ha avviato il workflow,
-          # puoi anche usare un placeholder generico come "github-actions"
-          # o ometterlo se usi solo il PAT nel URL.
-          # È più sicuro usare un token e ometterlo dall'URL se possibile,
-          # ma per la clonazione su HTTPS è spesso necessario.
-          SOME_VAR: blabla
 
       - name: Copy file to target repository and commit
         run: |
@@ -78,10 +58,4 @@ jobs:
           ls -lah
           git add ${{ inputs.filename }}
           git commit -m "Upload ${{ inputs.filename }} from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
-          git push https://${{ github.actor }}:${{ secrets.OTHER_REPO_PAT }}@github.com/Neomediatech/docker-images-scan-reports.git
-        env:
-          # Questo env GITHUB_TOKEN non è quello standard e non è richiesto se usi il PAT nell'URL
-          # GITHUB_TOKEN: ${{ secrets.OTHER_REPO_PAT }}
-          # Per un commit più sicuro, puoi usare un token per l'autenticazione come nel comando push.
-          # Assicurati che l'URL includa il token per l'autenticazione del push.
-          ANOTHER_VAR: blabla2
+          git push https://${{ github.actor }}:${{ secrets.API_TOKEN_GITHUB }}@github.com/Neomediatech/docker-images-scan-reports.git
