@@ -75,12 +75,12 @@ jobs:
 
       - name: Copy file to target repository and commit
         run: |
-          cp ${{ inputs.filename }} target-repo/
+          cp uploaded-file/${{ inputs.filename }} target-repo/
           cd target-repo
           ls -lah
-          #git ${{ inputs.filename }}
-          #git commit -m "Upload ${{ inputs.filename }} from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
-          #git push https://${{ github.actor }}:${{ secrets.OTHER_REPO_PAT }}@github.com/<YOUR_GITHUB_USERNAME_OR_ORG>/<TARGET_REPO_NAME>.git
+          git ${{ inputs.filename }}
+          git commit -m "Upload ${{ inputs.filename }} from ${{ github.repository }} - ${{ steps.date.outputs.now }}"
+          git push https://${{ github.actor }}:${{ secrets.OTHER_REPO_PAT }}@github.com/<YOUR_GITHUB_USERNAME_OR_ORG>/<TARGET_REPO_NAME>.git
         env:
           # Questo env GITHUB_TOKEN non è quello standard e non è richiesto se usi il PAT nell'URL
           # GITHUB_TOKEN: ${{ secrets.OTHER_REPO_PAT }}
