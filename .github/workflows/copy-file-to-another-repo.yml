@@ -25,10 +25,10 @@ jobs:
 
       # Simula la creazione di un file da caricare.
       # Nel tuo caso, qui avresti il tuo processo che genera 'il_tuo_file.txt'
-      - name: Create example file to upload
-        run: |
-          echo "Questo è il contenuto del file generato da Repository A." > il_tuo_file.txt
-          echo "Data e ora: $(date)" >> il_tuo_file.txt
+      #- name: Create example file to upload
+      #  run: |
+      #    echo "Questo è il contenuto del file generato da Repository A." > il_tuo_file.txt
+      #    echo "Data e ora: $(date)" >> il_tuo_file.txt
 
       - name: Get current date for commit message
         id: date
