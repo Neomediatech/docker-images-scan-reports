@@ -20,6 +20,13 @@ on:
     secrets:
       GHCR_TOKEN:
         required: true
+    outputs:
+      file_to_copy_output:
+        description: "The name of the generated HTML report file"
+        value: ${{ jobs.build-and-scan.outputs.file_to_copy_output }}
+      uploaded-file-id:
+        description: "The artifact ID of the uploaded HTML report"
+        value: ${{ jobs.build-and-scan.outputs.uploaded-file-id }}
 
 jobs:
   build-and-scan:
