@@ -79,7 +79,7 @@ jobs:
         run: wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
 
       - name: Generate HTML report from JSON
-        run: trivy convert --format template --template "@$GITHUB_WORKSPACE/html.tpl" -o trivy-report.html trivy-report.json
+        run: trivy convert --format template --template "@$GITHUB_WORKSPACE/html.tpl" -o ${{ steps.vars.outputs.file_to_copy }} trivy-report.json
 
       - name: Upload json report
         id: upload-json
