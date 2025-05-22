@@ -58,7 +58,6 @@ jobs:
           SOME_VAR: blabla
 
       - name: Copy file to target repository and commit
-        run: echo "Simple test"
         run: |
           cp ${{ inputs.filename }} target-repo/
           cd target-repo
